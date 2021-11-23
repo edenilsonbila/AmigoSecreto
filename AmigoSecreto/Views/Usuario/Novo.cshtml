@@ -1,0 +1,176 @@
+﻿@using System.Collections
+@using System.Web.Mvc.Html
+@using AmigoSecreto.Helpers
+@model AmigoSecreto.Models.Usuario
+
+@{
+    ViewBag.Title = "Novo";
+}
+
+<br/>
+
+<div class="container">
+    <p>
+        <button type="button" class="btn btn-default btn-sm" title="VOLTAR" data-placement="right" onclick="window.location.href = '@ViewBag.ReturUrl' ">
+            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+            Voltar
+        </button>
+    </p>
+
+        @if (TempData["MensagemRetorno"] != null)
+        {
+            <div id="alertaCO" class="alert alert-success" role="alert">
+                <p>@TempData["MensagemRetorno"]</p>
+                    @{ Response.Redirect("~/Home/Inicio");}
+            </div>
+                }
+
+                <div id="alertaCO" class="alert alert-danger hidden" role="alert">
+
+                    <p>FAVOR VERIFICAR OS CAMPOS OBRIGATÓRIOS</p>
+                </div>
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">CADASTRO DE USUARIO</div>
+                    <div class="panel-body">
+                        <!--
+                        <div class="panel panel-info" id="painelDadosPrincipais">
+                                <div class="panel-heading">DADOS PRINCIPAIS</div>
+                                <div class="panel-body">-->
+
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Nome)
+                                <!-- <div class="col-md-10"> -->
+                                @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Login)
+                                <span style="color: red;">*Usado para acessar o sistema</span>
+                                <!-- <div class="col-md-10"> -->
+                                @Html.EditorFor(model => model.Login, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Login, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Senha)
+                                <span style="color: red;">*Usado para acessar o sistema</span>
+                                <!-- <div class="col-md-10"> -->
+                                @Html.EditorFor(model => model.Senha, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                                @Html.ValidationMessageFor(model => model.Senha, "", new { @class = "text-danger" })
+                            </div>
+                            @*</div>*@
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Genero)
+                                <!-- <div class="col-md-10"> -->
+                                @Html.DropDownListFor(model => model.Genero, SelectListItemHelper.Genero(), new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Genero, "", new { @class = "text-danger" })
+                            </div>
+                            @*</div>*@
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Idade)
+                                <!-- <div class="col-md-10"> -->
+                                @Html.EditorFor(model => model.Idade, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Idade, "", new { @class = "text-danger" })
+                            </div>
+                            @*</div>*@
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.TamCalcado)
+                                <!-- <div class="col-md-10"> -->
+                                @Html.EditorFor(model => model.TamCalcado, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.TamCalcado, "", new { @class = "text-danger" })
+                            </div>
+                            @*</div>*@
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.TamCamisa)
+                                <!-- <div class="col-md-10"> -->
+                                @Html.EditorFor(model => model.TamCamisa, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.TamCamisa, "", new { @class = "text-danger" })
+                            </div>
+                            @*</div>*@
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.TamCalca)
+                                <!-- <div class="col-md-10"> -->
+                                @Html.EditorFor(model => model.TamCalca, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.TamCalca, "", new { @class = "text-danger" })
+                            </div>
+                            @*</div>*@
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SugestaoPresente)
+                        <span style="color: red;">*O que você gostaria de ganhar?</span>
+                        <!-- <div class="col-md-10"> -->
+                        @Html.EditorFor(model => model.SugestaoPresente, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SugestaoPresente, "", new { @class = "text-danger" })
+                    </div>
+                            @*</div>*@
+
+                            <div class="form-group pull-right">
+                                <div class="col-sm-1">
+                                    <button id="validar" type="submit" disabled="disabled" class="btn btn-success btn-sm" title="Salvar" data-placement="right">
+                                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                                        Salvar
+                                    </button>
+                                </div>
+                            </div>
+                            @*</div>*@
+                        }
+
+                        <!--</div> Fim do Panel Body - Panel Primary -->
+                        <!--</div><!-- Fim do Panel Info -->
+                    </div><!-- Fim do Panel Body -->
+                </div><!-- Fim do Panel Primary -->
+            </div><!-- Fim do Container -->
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+
+        $("form").on("submit", function() {
+            $("#validar").attr("disabled", "disabled");
+        });
+  
+
+    $("#Login").blur(function () {
+        var user = $(this).val();
+        $.ajax({
+            url: '/usuario/ValidaUsuario/',
+            type: 'POST',
+            datatype: 'application/json',
+            data: { user: user }, //Valor passsado como parâmetro
+            success: function (data) {
+                if (data !== "true") {
+                    alert(data);
+                    $("#validar").attr("disabled", "disabled");
+                } else {
+                    $("#validar").removeAttr("disabled");
+                }
+            },
+            error: function (xhr, status, error) {
+                alert('ERRO AO PROCESSAR REQUISIÇÃO. FAVOR INFORMAR AO ADMINISTRADOR DO SISTEMA.<br>ERRO: ' + error.toUpperCase());
+            },
+            complete: function () {
+
+            }
+        });
+    });
+    });
+</script>

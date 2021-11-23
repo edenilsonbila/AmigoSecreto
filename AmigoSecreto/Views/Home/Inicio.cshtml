@@ -1,0 +1,200 @@
+﻿@using AmigoSecreto.Models
+@using AmigoSecretoSystem.Helpers
+
+@{
+    ViewBag.Title = "Inicio";
+}
+
+<br />
+
+<div class="container">
+    <div class="hidden panel panel-primary ">
+        <div class="panel-heading">GERENCIAR</div>
+        <div class="panel-body">
+
+            <div class="form-group">
+                <div class="col-md-3">
+                    <button type="button" id="CriarAmigo" onclick="window.location.href = window.location.origin + '/' + 'amigosecreto/create/'" class="btn btn-md btn-success">Criar Amigo Secreto</button>
+                </div>
+
+                <div class="col-md-3">
+                    <button type="button" id="BuscarAmigo" onclick="window.location.href = window.location.origin + '/' + 'amigosecreto/buscar/'" class="btn btn-md btn-success">Buscar Amigo Secreto</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["msgSucesso"] != null)
+    {
+        <div id="msgSucesso" class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <p>@TempData["msgSucesso"]</p>
+        </div>
+    }
+
+    @if (TempData["msgErro"] != null)
+    {
+        <div id="msgErro" class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <p>@TempData["msgSucesso"]</p>
+        </div>
+    }
+
+    @{
+        if (Session["usuarioLogado"] != null)
+        {
+            var usuario = new Context().Usuario.Find(int.Parse(Session["usuarioLogado"].ToString()));
+            <h3>Bem Vindo(a), @Criptografia.Decript(usuario.Nome)</h3>
+
+        }
+    }
+
+
+    @*<div class="panel panel-primary">
+            <div class="panel-heading">AMIGOS SECRETOS DISPONIVEIS</div>
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Data</th>
+                        <th>Participar</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in ViewBag.AmigosSecretos)
+                    {
+                        var amg = (AmigoSecreto) item;
+                        <tr>
+                            <td>@amg.Descricao</td>
+                            <td>@amg.DataHora</td>
+                            <td><button type="button" name="btnParticipar" data-id="@amg.Id" class="btn btn-success btn-md"><span class="glyphicon glyphicon-ok-sign"></span></button></td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>*@
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">DETALHES</div>
+        <div class="panel-body" style="text-align-last: center; display: block;">
+            @{
+                var amigoSecretoAtual = ((List<AmigoSecreto>)ViewBag.AmigosSecretosParticipa).FirstOrDefault();
+                var sorteado = (Usuario)ViewBag.PessoaSorteada;
+            }
+
+            @if (ViewBag.JaSorteou == "Sim")
+            {
+                <label>VOCÊ SORTEOU: <b style="color: red;">@(Criptografia.Decript(sorteado.Nome))</b></label>
+                <br />
+                <button type="button" name="btnDetalhes" data-id="@sorteado.Id" class="btn btn-success btn-md"><span class="glyphicon glyphicon-dashboard"></span> Detalhes do Sorteado</button>
+            }
+            else
+            {
+                if (amigoSecretoAtual.SorteioLiberado == "N")
+                {
+                    <label style="color:red;">ATENÇÃO: SORTEIO AINDA NÃO LIBERADO, AGUARDE A LIBERAÇÃO QUANDO TODOS SE CADASTRAREM</label>
+                }
+                else
+                {
+                    <label style="color:blue;">SORTERIO LIBERADO! CLIQUE EM SORTEAR E AGUARDE,OS DADOS DO SORTEADO APARECERÃO NA TELA!</label>
+                }
+                <br />
+                <button type="button" name="btnSorteio" data-id="@amigoSecretoAtual.Id" @(amigoSecretoAtual.SorteioLiberado == "N" ? "disabled='disabled'" : "") class="btn btn-success btn-md"><span class="glyphicon glyphicon-ok-sign"></span> Sortear</button>
+            }
+
+
+            @*<table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Data</th>
+                    <th>Sortear</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.AmigosSecretosParticipa)
+                {
+                    var amg = (AmigoSecreto)item;
+                    <tr>
+                        <td>@amg.Descricao</td>
+                        <td>@amg.DataHora</td>
+                        @if (ViewBag.JaSorteou == "Sim")
+                        {
+                            <td><button type="button" name="btnDetalhes" data-id="@ViewBag.PessoarSoteadaId" class="btn btn-success btn-md"><span class="glyphicon glyphicon-dashboard"></span> Detalhes do Sorteado</button></td>
+                        }
+                        else
+                        {
+                            <td><button type="button" name="btnSorteio" data-id="@amg.Id" disabled="disabled" class="btn btn-success btn-md"><span class="glyphicon glyphicon-ok-sign"></span> Sortear</button></td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>*@
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalDetalhes">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">DETALHES DA PESSOA TIRADA</h4>
+                </div>
+                <div id="modalNotificacaoMsg" class="modal-body">
+                    <h3>Você Tirou:</h3>
+                    <h2 style="color: red;" id="nomePessoaTirada"></h2>
+                    @*<div class="form-group">
+                            <label for="Nome">Nome</label>
+                            <input class="form-control text-box single-line" data-val="true" data-val-length="O tamanho máximo são 50 caracteres." data-val-length-max="50" data-val-minlength="O tamanho mínimo do nome são 2 caracteres." data-val-minlength-min="2" data-val-required="Digite um nome." id="Nome" name="Nome" type="text" value="">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="Nome" data-valmsg-replace="true"></span>
+                        </div>*@
+                    <div class="form-group">
+                        <label for="Genero">Gênero</label>
+                        <!-- <div class="col-md-10"> -->
+                        <input class="form-control text-box single-line" readonly="readonly" data-val="true" data-val-number="The field Idade must be a number." id="Genero" name="Genero" type="text" value="">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="Idade">Idade</label>
+                        <!-- <div class="col-md-10"> -->
+                        <input class="form-control text-box single-line" readonly="readonly" data-val="true" data-val-number="The field Idade must be a number." id="Idade" name="Idade" type="number" value="">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="TamCalcado">Tamanho Calçado</label>
+                        <!-- <div class="col-md-10"> -->
+                        <input class="form-control text-box single-line" readonly="readonly" data-val="true" data-val-number="The field Tamanho Calçado must be a number." id="TamCalcado" name="TamCalcado" type="number" value="">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="TamCamisa">Tamanho da Camisa</label>
+                        <!-- <div class="col-md-10"> -->
+                        <input class="form-control text-box single-line" readonly="readonly" data-val="true" data-val-length="O campo Tamanho da Camisa deve ser uma cadeia de caracteres com um comprimento máximo de 5." data-val-length-max="5" id="TamCamisa" name="TamCamisa" type="text" value="">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="TamCalca">Tamanho da Calça</label>
+                        <!-- <div class="col-md-10"> -->
+                        <input class="form-control text-box single-line" readonly="readonly" data-val="true" data-val-length="O campo Tamanho da Calça deve ser uma cadeia de caracteres com um comprimento máximo de 5." data-val-length-max="5" id="TamCalca" name="TamCalca" type="text" value="">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="SugestaoPresente">Sugestão Presente</label>
+                        <!-- <div class="col-md-10"> -->
+                        <input class="form-control text-box single-line" readonly="readonly" data-val="true" data-val-length="O campo Sugestão Presente deve ser uma cadeia de caracteres com um comprimento máximo de 50." data-val-length-max="50" id="SugestaoPresente" name="SugestaoPresente" type="text" value="">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" readonly="readonly" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Fechar</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/home.js"></script>
+
+</div>

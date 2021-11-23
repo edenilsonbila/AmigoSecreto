@@ -1,0 +1,29 @@
+﻿create table Usuario(
+Id int primary key identity,
+Nome nvarchar(50) not null,
+Login nvarchar(50) not null,
+Senha nvarchar(50) not null,
+Genero char(1),
+Idade int,
+TamCalcado int,
+TamCamisa nvarchar(5),
+TamCalca nvarchar(5),
+SugestaoPresente nvarchar(50)
+)
+
+create table AmigoSecreto(
+Id int primary key identity,
+Descricao nvarchar(20),
+DataHora datetime
+)
+
+create table Participantes(
+Id int primary key identity,
+UsuarioId int foreign key references Usuario(Id),
+AmigoSecretoId int foreign key references AmigoSecreto(Id),
+Sorteado char(1), --S=Sim, N=Nao
+QuemSorteouId int foreign key references Usuario(Id), --PEssoa que te tirou
+PessoaTiradaId int foreign key references Usuario(Id), --Pessoa tirada no amigo secreto
+)
+
+alter table AmigoSecreto add SorteioLiberado nvarchar(1) not null default 'N'

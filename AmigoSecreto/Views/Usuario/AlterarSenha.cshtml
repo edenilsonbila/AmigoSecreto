@@ -1,0 +1,43 @@
+﻿@model AmigoSecreto.Models.Usuario
+
+@{
+    ViewBag.Title = "Alterar Senha";
+}
+
+<br />
+
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">Alterar Senha</div>
+        <div class="panel-body">
+            @using (Html.BeginForm())
+            {
+                @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                <div class="form-group">
+                    <label>Nova Senha</label>
+                    <!-- <div class="col-md-10"> -->
+                    @Html.EditorFor(model => model.Senha, new {htmlAttributes = new {@class = "form-control", @type = "password"}})
+                    @Html.ValidationMessageFor(model => model.Senha, "", new {@class = "text-danger"})
+                </div>
+
+                <div class="form-group">
+                    <label>Confirmar Senha</label>
+                    <input id="ConfirmaSenha" type="password" class="form-control"/>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        <button id="validar" type="button" class="btn btn-success btn-sm" disabled="disabled" title="Salvar" data-placement="right">
+                            <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                            Salvar
+                        </button>
+                        <input id="submit1" type="submit" class="hidden" value="submit"/>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/Usuario.js"></script>
