@@ -80,6 +80,8 @@ namespace AmigoSecreto.Controllers
                         Sorteado = "N"
                     };
 
+                    //insert into Participantes (UsuarioId,AmigoSecretoId,Sorteado) values (
+
                     _ctx.Participantes.Add(participante);
                     _ctx.SaveChanges();
 
@@ -98,15 +100,23 @@ namespace AmigoSecreto.Controllers
 
         public JsonResult ValidaUsuario(string user)
         {
-            var userencruipt = Criptografia.Encrypt(user.ToUpper());
-            var usuario = _ctx.Usuario.Where(e => e.Login == userencruipt).FirstOrDefault();
-            if (usuario != null)
+            try
             {
-                return Json("Usuário ja cadastrado");
+                var userencruipt = Criptografia.Encrypt(user.ToUpper());
+                var usuario = _ctx.Usuario.Where(e => e.Login == userencruipt).FirstOrDefault();
+                if (usuario != null)
+                {
+                    return Json("Usuário ja cadastrado");
+                }
+                else
+                {
+                    return Json("true");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Json("true");
+                Auxiliares.GravaLogErro(ex);
+                throw;
             }
         }
 

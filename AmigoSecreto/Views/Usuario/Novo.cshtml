@@ -112,7 +112,7 @@
                         @Html.LabelFor(model => model.SugestaoPresente)
                         <span style="color: red;">*O que você gostaria de ganhar?</span>
                         <!-- <div class="col-md-10"> -->
-                        @Html.EditorFor(model => model.SugestaoPresente, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.TextAreaFor(model => model.SugestaoPresente, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.SugestaoPresente, "", new { @class = "text-danger" })
                     </div>
                             @*</div>*@

@@ -52,7 +52,7 @@ namespace AmigoSecreto.Models
         public string TamCalca { get; set; }
 
         [DisplayName("Sugestão Presente")]
-        [StringLength(50)]
+        [StringLength(200)]
         public string SugestaoPresente { get; set; }
 
     }
